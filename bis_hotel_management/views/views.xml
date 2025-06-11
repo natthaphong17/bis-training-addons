@@ -1,0 +1,62 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="bis_hotel_management_hotel_room_list">
+      <field name="name">bis_hotel_management_hotel_room_list</field>
+      <field name="model">hotel.room</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="sequence"/>
+          <field name="name"/>
+          <field name="hotel_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="bis_hotel_management_hotel_room_form">
+      <field name="name">bis_hotel_management_hotel_room_form</field>
+      <field name="model">hotel.room</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="sequence"/>
+              </group>
+              <group>
+                <field name="name"/>
+                <field name="hotel_id"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="bis_hotel_management_hotel_room_action_window">
+      <field name="name">Hotel Room</field>
+      <field name="res_model">hotel.room</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" ref="bis_hotel_management_hotel_room_list"/>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="Hotel Management" id="bis_hotel_management.menu_root"/>
+    <!-- menu categories -->
+    <menuitem name="Hotel Management"
+              id="bis_hotel_management.menu_hotel_management"
+              parent="bis_hotel_management.menu_root"/>
+ <menuitem name="Hotel Room"
+              id="bis_hotel_management.menu_hotel_room"
+              parent="bis_hotel_management.menu_root"
+              action="bis_hotel_management_hotel_room_action_window"/>
+    <!-- actions -->
+<!--    <menuitem name="Hotel Room"-->
+<!--              id="bis_hotel_management.menu_hotel_room_list"-->
+<!--              parent="bis_hotel_management.menu_root"-->
+<!--              action="bis_hotel_management_hotel_room_action_window"/>-->
+<!--    <menuitem name="List" id="./custom-addons/bis-hotel-management.menu_1_list" parent="./custom-addons/bis-hotel-management.menu_1"-->
+<!--              action="./custom-addons/bis-hotel-management.action_window"/>-->
+  </data>
+</odoo>

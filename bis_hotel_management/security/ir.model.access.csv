@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+bis_hotel_management_hotel_management,bis_hotel_management_hotel_management,model_hotel_management,base.group_user,1,1,1,1
+bis_hotel_management_hotel_room_admin,bis_hotel_management_hotel_room_admin,model_hotel_room,base.group_erp_manager,1,1,1,1
+bis_hotel_management_hotel_room,bis_hotel_management_hotel_room,model_hotel_room,base.group_user,1,1,1,0
+bis_hotel_management_customer_management,bis_hotel_management_customer_management,model_customer_management,base.group_user,1,1,1,1
