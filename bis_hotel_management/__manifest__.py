@@ -24,6 +24,8 @@ BIS Hotel Management
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
+        'views/room_views.xml',
+        'wizard/hotel_room_wizard.xml',
         # 'views/templates.xml',
     ],
     # only loaded in demonstration mode

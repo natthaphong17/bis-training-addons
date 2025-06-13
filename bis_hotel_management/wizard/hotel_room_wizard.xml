@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <record id="hotel_room_wizard" model="ir.ui.view">
+        <field name="name">hotel.room.wizard.form</field>
+        <field name="model">hotel.room.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Hotel Room">
+                <group>
+                    <field name="hotel_id"/>
+                    <field name="name"/>
+                </group>
+                <footer>
+                    <button name="checkin" string="Check In" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" />
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hotel_room_wizard" model="ir.actions.act_window">
+        <field name="name">Hotel Room</field>
+        <field name="res_model">hotel.room.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <!-- menu categories -->
+    <menuitem name="Hotel Wizard"
+              id="bis_hotel_management.menu_hotel_wizard"
+              parent="bis_hotel_management.menu_root"/>
+    <menuitem name="Hotel Room Wizard"
+              id="bis_hotel_management.menu_hotel_room_wizard"
+              parent="bis_hotel_management.menu_hotel_wizard"
+              action="action_hotel_room_wizard"/>
+</odoo>

@@ -9,6 +9,15 @@
           <field name="sequence"/>
           <field name="name"/>
           <field name="hotel_id"/>
+          <field name="booking_date"/>
+          <field name="checkin_date"/>
+          <field name="checkout_date"/>
+          <field name="status_booking" widget="badge"
+                 decoration-info="status_booking == 'draft'"
+                 decoration-warning="status_booking == 'booking'"
+                 decoration-success="status_booking == 'checkin'"
+                 decoration-danger="status_booking == 'checkout'"
+            />
         </tree>
       </field>
     </record>
@@ -18,26 +27,151 @@
       <field name="model">hotel.room</field>
       <field name="arch" type="xml">
         <form>
+          <header>
+              <button name="generate_sequence" type="object" string="Generate Sequence" class="oe_highlight"/>
+              <button name="open_wizard" type="object" string="Open Wizard" class="oe_highlight"/>
+              <button name="sql_query" type="object" string="SQL" class="oe_highlight"/>
+              <field name="status_booking" widget="statusbar" statusbar_visible="draft,booking,checkin,checkout,cancel"/>
+          </header>
           <sheet>
-            <group>
+             <div class="oe_title">
+                <span class="o_form_label">Hotel Room</span>
+                <h1 class="d-flex">
+                    <field name="name" readonly="0"/>
+                </h1>
+            </div>
+            <group name="body">
               <group>
                 <field name="sequence"/>
+                <field name="hotel_id"/>
               </group>
               <group>
-                <field name="name"/>
-                <field name="hotel_id"/>
+                <field name="booking_date"/>
+                <field name="checkin_date"/>
+                <field name="checkout_date"/>
               </group>
             </group>
           </sheet>
+            <div class="oe_chatter">
+                <field name="message_follower_ids"/>
+                <field name="activity_ids"/>
+                <field name="message_ids"/>
+            </div>
         </form>
       </field>
+    </record>
+
+    <record model="ir.ui.view" id="hotel_room_kanban">
+      <field name="name">bis_hotel_management_hotel_room_kanban</field>
+      <field name="model">hotel.room</field>
+      <field name="arch" type="xml">
+        <kanban class="o_kanban_mobile" sample="1" quick_create="true">
+          <field name="sequence"/>
+          <field name="name"/>
+          <field name="hotel_id"/>
+          <field name="booking_date"/>
+          <field name="checkin_date"/>
+          <field name="checkout_date"/>
+          <field name="activity_state"/>
+            <progressbar field="activity_state"
+                colors='{"planned": "success", "today": "warning", "overdue": "danger"}'/>
+          <templates>
+                <t t-name="kanban-box">
+                    <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                        <div class="o_kanban_record_top mb16">
+                            <div class="o_kanban_record_headings ms-1">
+                                <strong class="o_kanban_record_title"><span><field name="name"/></span></strong>
+                            </div>
+                            <field name="status_booking" widget="badge"
+                               decoration-info="status_booking == 'draft'"
+                               decoration-warning="status_booking == 'booking'"
+                               decoration-success="status_booking == 'checkin'"
+                               decoration-danger="status_booking == 'checkout'"
+                            />
+                        </div>
+                        <div class="o_kanban_record_bottom">
+                            <div class="oe_kanban_bottom_left">
+                                <span><i></i><field name="booking_date"/></span>
+                            </div>
+                            <div class="oe_kanban_bottom_right">
+                                <span><field name="checkin_date"/> - <field name="checkout_date"/></span>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <record id="hotel_room_activity" model="ir.ui.view">
+        <field name="name">hotel.room.activity</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <activity string="Hotel Room">
+                <templates>
+                    <div t-name="activity-box" class="d-block">
+                        <div class="d-flex justify-content-between">
+                            <field name="name" display="full" class="o_text_block o_text_bold"/>
+                            <div class="m-1"/>
+<!--                            <field name="amount_total"/>-->
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <field name="hotel_id" muted="1" display="full" class="o_text_block"/>
+                            <div class="m-1"/>
+                            <field name="status_booking" widget="badge"
+                               decoration-info="status_booking == 'draft'"
+                               decoration-warning="status_booking == 'booking'"
+                               decoration-success="status_booking == 'checkin'"
+                               decoration-danger="status_booking == 'checkout'"
+                            />
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
+    <record id="hotel_room_calendar" model="ir.ui.view">
+        <field name="name">hotel.room.calendar</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <calendar string="Hotel Room" create="0" mode="month" date_start="booking_date" color="name" event_limit="5" quick_create="0">
+                <field name="name"/>
+                <field name="checkin_date"/>
+                <field name="checkout_date"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="hotel_room_graph" model="ir.ui.view">
+        <field name="name">hotel.room.graph</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <graph string="Hotel Room" sample="1">
+                <field name="name"/>
+                <field name="booking_date" interval="day"/>
+                <field name="hotel_id" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="hotel_room_pivot" model="ir.ui.view">
+        <field name="name">hotel.room.pivot</field>
+        <field name="model">hotel.room</field>
+        <field name="arch" type="xml">
+            <pivot string="Hotel Room" sample="1">
+                <field name="name" type="row"/>
+                <field name="hotel_id" type="measure"/>
+            </pivot>
+        </field>
     </record>
 
     <!-- actions opening views on models -->
     <record model="ir.actions.act_window" id="bis_hotel_management_hotel_room_action_window">
       <field name="name">Hotel Room</field>
       <field name="res_model">hotel.room</field>
-      <field name="view_mode">tree,form</field>
+      <field name="view_mode">tree,kanban,form,pivot,graph,calendar,activity</field>
       <field name="view_id" ref="bis_hotel_management_hotel_room_list"/>
     </record>
 
