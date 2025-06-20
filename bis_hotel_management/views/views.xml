@@ -5,7 +5,7 @@
       <field name="name">bis_hotel_management_hotel_room_list</field>
       <field name="model">hotel.room</field>
       <field name="arch" type="xml">
-        <tree>
+        <tree edit="False" create="True">
           <field name="sequence"/>
           <field name="name"/>
           <field name="hotel_id"/>
@@ -22,6 +22,24 @@
       </field>
     </record>
 
+    <record model="ir.ui.view" id="view_order_form_bis">
+      <field name="name">view_order_form_bis</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+          <xpath expr="//field[@name='partner_id']" position="attributes">
+              <t groups="bis_hotel_management.group_partner_no_create">
+                <attribute name="options">{'no_create':True}</attribute>
+              </t>
+          </xpath>
+<!--          <xpath expr="//field[@name='partner_id']" position="attributes">-->
+<!--              <t groups="base.group_system">-->
+<!--                <attribute name="options">{'no_create':False}</attribute>-->
+<!--              </t>-->
+<!--          </xpath>-->
+      </field>
+    </record>
+
     <record model="ir.ui.view" id="bis_hotel_management_hotel_room_form">
       <field name="name">bis_hotel_management_hotel_room_form</field>
       <field name="model">hotel.room</field>
@@ -30,7 +48,7 @@
           <header>
               <button name="generate_sequence" type="object" string="Generate Sequence" class="oe_highlight"/>
               <button name="open_wizard" type="object" string="Open Wizard" class="oe_highlight"/>
-              <button name="sql_query" type="object" string="SQL" class="oe_highlight"/>
+<!--              <button name="sql_query" type="object" string="SQL" class="oe_highlight"/>-->
               <field name="status_booking" widget="statusbar" statusbar_visible="draft,booking,checkin,checkout,cancel"/>
           </header>
           <sheet>
@@ -43,7 +61,9 @@
             <group name="body">
               <group>
                 <field name="sequence"/>
-                <field name="hotel_id"/>
+                <field name="hotel_id" options="{'no_create':True, 'no_open':True}"/>
+                <field name="accessories" widget="many2many_tags"/>
+                <field name="status_booking"/>
               </group>
               <group>
                 <field name="booking_date"/>
@@ -186,6 +206,11 @@
               parent="bis_hotel_management.menu_root"
               action="bis_hotel_management_hotel_room_action_window"/>
     <!-- actions -->
+
+      <menuitem name="Hotel Room Report"
+              id="bis_hotel_management.menu_hotel_room_report"
+              parent="bis_hotel_management.menu_root"
+              action="action_hotel_room_report"/>
 <!--    <menuitem name="Hotel Room"-->
 <!--              id="bis_hotel_management.menu_hotel_room_list"-->
 <!--              parent="bis_hotel_management.menu_root"-->

@@ -1,24 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <data>
-<!--
-        <template id="listing">
-          <ul>
-            <li t-foreach="objects" t-as="object">
-              <a t-attf-href="#{ root }/objects/#{ object.id }">
-                <t t-esc="object.display_name"/>
-              </a>
-            </li>
-          </ul>
-        </template>
-        <template id="object">
-          <h1><t t-esc="object.display_name"/></h1>
-          <dl>
-            <t t-foreach="object._fields" t-as="field">
-              <dt><t t-esc="field"/></dt>
-              <dd><t t-esc="object[field]"/></dd>
+        <template id="website_hotel_room_list_page" name="Website Hotel Room Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="page">
+                        <div class="container">
+                            <h4>Rooms</h4>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Sequence</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rooms or []" t-as="room">
+                                        <tr>
+                                            <td><a t-attf-href="/rooms/#{room.id}"><t t-esc="room.id"/></a></td>
+                                            <td><t t-esc="room.sequence"/></td>
+                                            <td><t t-esc="room.name"/></td>
+                                            <td><t t-esc="room.description"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </t>
-          </dl>
         </template>
--->
+
+        <template id="website_hotel_room_with_id_page" name="Website Hotel Room Page">
+            <t t-call="website.layout">
+                <div id="wrap" class="oe_structure oe_empty">
+                    <div class="page">
+                        <div class="container">
+                            <h4>Rooms</h4>
+                            <div class="row">
+                                <div class="col-6"><t t-esc="room_id"/></div>
+                                <div class="col-6"><t t-esc="sequence"/></div>
+                                <div class="col-6"><t t-esc="name"/></div>
+                                <div class="col-6"><t t-esc="description"/></div>
+                            </div>
+                            <button><a t-attf-href="/rooms">Back</a></button>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
     </data>
 </odoo>

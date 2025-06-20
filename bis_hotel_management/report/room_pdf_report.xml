@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <template id="room_pdf_report_document">
+       <t t-call="web.html_container">
+        <t t-set="o" t-value="o.with_context(lang=o._get_report_lang())"/>
+           <t t-set="company" t-value="o._get_company_data()"/>
+<!--        <t t-call="web.external_layout">-->
+            <div class="page">
+                <div class="oe_structure"/>
+                <h2 class="mt-4">Header Report</h2>
+                <h4><t t-esc="company.name"/></h4>
+                <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" style="max-height: 45px;" alt="Logo"/>
+                <table class="table table-sm o_main_table table-borderless mt-4">
+                    <!-- In case we want to repeat the header, remove "display: table-row-group" -->
+                    <thead style="display: table-row-group">
+                        <tr>
+                            <th name="th_sequence" class="text-start">Sequence</th>
+                            <th name="th_name" class="text-start">Name</th>
+                            <th name="th_description" class="text-start">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style=""><t t-esc="o.sequence" /></td>
+                            <td><t t-esc="o.name" /></td>
+                            <td><t t-esc="o.description" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+<!--           <script>-->
+
+<!--           </script>-->
+<!--           <style>-->
+
+<!--           </style>-->
+        </t>
+<!--       </t>-->
+    </template>
+
+    <template id="room_pdf_report">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="bis_hotel_management.room_pdf_report_document" t-lang="o._get_report_lang()"/>
+        </t>
+    </template>
+
+    <record id="action_report_room_pdf_report" model="ir.actions.report">
+        <field name="name">Room Report</field>
+        <field name="model">hotel.room</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bis_hotel_management.room_pdf_report</field>
+        <field name="report_file">bis_hotel_management.room_pdf_report</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+        <field name="binding_model_id" ref="model_hotel_room" />
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

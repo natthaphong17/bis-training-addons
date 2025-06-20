@@ -2,14 +2,27 @@
 
 from odoo import models, fields, api, _
 from odoo.addons.account.tools.certificate import load_key_and_certificates
-from datetime import datetime
+from datetime import datetime, timedelta
 from odoo.exceptions import AccessError, UserError, ValidationError
+
 
 class HotelManagement(models.Model):
     _name = 'hotel.management'
     _description = 'Hotel Management'
 
     name = fields.Char(string='Hotel Name', required=True)
+
+class HotelAccessories(models.Model):
+    _name = 'hotel.accessories'
+
+    name = fields.Char(string='Accessories Name', required=True)
+    color = fields.Char(string='Accessories Color', required=False)
+
+
+# class ResUser(models.Model):
+#     _inherit = 'res.user'
+#
+#     partner_access = fields.Boolean(default=False)
 
 
 class HotelRoom(models.Model):
@@ -21,17 +34,36 @@ class HotelRoom(models.Model):
     #     'sequence', 'name',
     # ]
 
+    user_access = fields.Boolean(default=False)
+    company_id = fields.Many2one('res.company', string='Company', compute="_get_company_data", required=True)
     sequence = fields.Integer(string='Hotel Room Sequence', default=1, required=True)
     name = fields.Char(string='Hotel Room Name', required=True)
     description = fields.Char(string='Hotel Room Description', required=False)
-    hotel_id = fields.Many2one('hotel.management', string='Hotel', required=True)
-    booking_date = fields.Date(string='Hotel Booking Date', default=datetime.now(), required=True)
-    checkin_date = fields.Date(string='Hotel Checkin Date', default=datetime.now(), required=True)
-    checkout_date = fields.Date(string='Hotel Checkout Date', default=datetime.now(), required=True)
+    hotel_id = fields.Many2one('hotel.management', string='Hotel', required=False)
+    booking_date = fields.Date(string='Hotel Booking Date', default=datetime.now(), required=False)
+    checkin_date = fields.Date(string='Hotel Checkin Date', default=datetime.now(), required=False)
+    checkout_date = fields.Date(string='Hotel Checkout Date', default=datetime.now(), required=False)
     status_booking = fields.Selection([('draft','Draft'),('booking','Booking'),
                                        ('checkin','Checkin'),('checkout','Checkout'),
                                        ('cancel','Cancel')], default='draft')
 
+    accessories = fields.Many2many('hotel.accessories', column1='room_id', column2='accessories_id', string='Accessories')
+    # category_id = fields.Many2many('res.partner.category', column1='partner_id',
+    #                                column2='category_id', string='Tags', default=_default_category)
+
+    def _get_report_lang(self):
+        return self.env.lang
+
+    def _get_company_data(self):
+        return self.env.company
+
+    def action_print(self):
+        return (self.env.ref('bis_hotel_management.action_report_room_pdf_report').report_action(self))
+
+    # def check_user_access(self):
+    #     partner_access = self.env.user.partner_access
+    #     if partner_access:
+    #         self.user_access = partner_access
 
     # @api.onchange('hotel_id')
     # def _onchange_hotel_id(self):
@@ -45,6 +77,11 @@ class HotelRoom(models.Model):
     #     for room in self:
     #         if room.hotel_id:
     #             room.sequence = len(sequence) + 9
+
+    def _auto_delete(self):
+        room = self.env['hotel.room'].search([('status_booking', '=', 'draft'),
+                                              ('booking_date', '<', (datetime.now() - timedelta(days=7)))])
+        room.sudo().unlink()
 
     def generate_sequence(self):
         sequence = self.env['hotel.room'].search([('sequence', '>=', 1)])
@@ -84,8 +121,8 @@ class HotelOrder(models.Model):
 class HotelRoomInherit(models.Model):
     _inherit = 'hotel.room'
 
-    note = fields.Text(string='Note', required=True)
-    casher_id = fields.Many2one('res.partner', string='Casher', required=True)
+    note = fields.Text(string='Note', required=False)
+    casher_id = fields.Many2one('res.partner', string='Casher', required=False)
 
 
     def generate_sequence(self):

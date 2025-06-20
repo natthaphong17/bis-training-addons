@@ -53,10 +53,10 @@
                                 </group>
                             </group>
                         </page>
-                        <page name="note3">
+                        <page name="note3" string="Note 3">
                             <field name="note"/>
                         </page>
-                        <page name="note4">
+                        <page name="note4" string="Note 4">
                             <field name="note"/>
                         </page>
                         <page name="note5">

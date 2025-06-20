@@ -1,0 +1,6 @@
+id,hotel_id,booking_date,checkin_date,checkout_date,name,sequence,status_booking,note,description,casher_id
+bis_hotel_management.room_10,Hotel 02,2025-06-18,2025-06-18,2025-06-18,Room 10,10,Draft,Note for Room 10,Booking for Room 10,Gemini Furniture
+bis_hotel_management.room_11,Hotel 02,2025-06-18,2025-06-18,2025-06-18,Room 11,11,Draft,Note for Room 11,Booking for Room 11,Gemini Furniture
+bis_hotel_management.room_12,Hotel 02,2025-06-18,2025-06-19,2025-06-20,Room 12,12,Draft,Note for Room 12,Booking for Room 12,Gemini Furniture
+bis_hotel_management.room_13,Hotel 02,2025-06-18,2025-06-18,2025-06-18,Room 13,13,Draft,Note for Room 13,Booking for Room 13,Gemini Furniture
+,,,

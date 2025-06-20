@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo noupdate="1">
+    <record model="hotel.management" id="hotel_02">
+        <field name="name">Hotel 02</field>
+    </record>
+
+    <record model="hotel.room" id="room_09">
+        <field name="sequence">9</field>
+        <field name="name">Room 09</field>
+        <field name="description">Booking for Room 09</field>
+        <field name="hotel_id" ref="bis_hotel_management.hotel_02"/>
+        <field name="booking_date"
+               eval="DateTime.strptime('2025-06-16', '%Y-%m-%d')"/>
+        <field name="checkin_date"
+               eval="DateTime.strptime('2025-06-17', '%Y-%m-%d')"/>
+        <field name="checkout_date"
+               eval="DateTime.strptime('2025-06-18', '%Y-%m-%d')"/>
+        <field name="casher_id">11</field>
+        <field name="status_booking">draft</field>
+        <field name="note">Note for Room 09</field>
+    </record>
+
+    <record id="ir_cron_room_auto_delete" model="ir.cron">
+        <field name="name">Hotel Room: Auto delete</field>
+        <field name="model_id" ref="bis_hotel_management.model_hotel_room"/>
+        <field name="state">code</field>
+        <field name="code">model._auto_delete()</field>
+        <field name='interval_number'>5</field>
+        <field name='interval_type'>minutes</field>
+        <field name="numbercall">-1</field>
+    </record>
+
+
+    <record model="res.groups" id="group_partner_no_create">
+        <field name="name">Contact Creation 2</field>
+<!--        <field name="users" eval="[Command.link(ref('base.user_root')), Command.link(ref('base.user_admin'))]"/>-->
+    </record>
+</odoo>

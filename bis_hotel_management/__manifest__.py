@@ -18,15 +18,20 @@ BIS Hotel Management
     'version': '17.0.0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'sale', 'sale_management'],
+    'depends': ['base', 'web', 'website', 'sale', 'sale_management'],
 
     # always loaded
     'data': [
+        # 'data/hotel_management_data.xml',
+        # 'data/hotel.room.csv',
+        'report/room_report_views.xml',
+        'report/room_pdf_report.xml',
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/room_views.xml',
         'wizard/hotel_room_wizard.xml',
-        # 'views/templates.xml',
+        'views/templates.xml',
+        'views/website_home_template.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
